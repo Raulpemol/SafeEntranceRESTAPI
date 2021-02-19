@@ -1,0 +1,26 @@
+{
+  "name": "registrolocales_server_back",
+  "version": "1.0.0",
+  "description": "Servidor backend para el sistema de registro de entrada en locales",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raulpemol/registroLocales_server_back.git"
+  },
+  "author": "Raúl Pérez Molinero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raulpemol/registroLocales_server_back/issues"
+  },
+  "homepage": "https://github.com/Raulpemol/registroLocales_server_back#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
