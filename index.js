@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const hostname = 'localhost';
-const port = 3000;
+const hostname = process.env.WEBSITE_HOSTNAME || 'localhost';
+const port = process.env.port || 8080;
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
