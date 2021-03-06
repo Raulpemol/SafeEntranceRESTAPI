@@ -1,12 +1,12 @@
 const express = require('express');
-const getDBConnection = require('./modules/database/BDManager');
+const getDBConnection = require('./modules/BDManager');
 
 const app = express();
 
 getDBConnection();
 
 app.use(express.json({extended : false}));
-app.use('/api/placeModel', require('./modules/api/Place'))
+app.use('/api/places', require('./modules/api/routes/place'))
 
 const hostname = process.env.WEBSITE_HOSTNAME || 'localhost';
 const port = process.env.port || 8080;
