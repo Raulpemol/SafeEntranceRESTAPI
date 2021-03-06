@@ -1,5 +1,5 @@
 const express = require('express');
-const getDBConnection = require('./modules/BDManager');
+const getDBConnection = require('./modules/DBManager');
 
 const app = express();
 

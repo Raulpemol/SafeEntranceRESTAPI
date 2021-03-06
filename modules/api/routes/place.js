@@ -15,10 +15,7 @@ route.post('/', async (req, res) => {
             console.log(result);
     }).catch(err => console.log(err));
 
-    res.status(201).json({
-        message: 'Registering new place...',
-        registeredPlace: place
-    });
+    res.status(201).json(place);
 });
 
 module.exports = route;

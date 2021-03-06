@@ -6,7 +6,6 @@ const dbConnection = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
-    console.log('db connected');
 };
 
 module.exports = dbConnection;
