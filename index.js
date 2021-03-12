@@ -2,8 +2,8 @@ const express = require('express');
 const getDBConnection = require('./modules/DBManager');
 
 const app = express();
-
-getDBConnection();
+const URI = "mongodb+srv://admin:VXm8s3Up4BLK86HS@safeentrancebd.riy03.mongodb.net/SafeEntranceBD?retryWrites=true&w=majority";
+getDBConnection(URI);
 
 app.use(express.json({extended : false}));
 app.use('/api/addPlace', require('./modules/api/routes/place'))

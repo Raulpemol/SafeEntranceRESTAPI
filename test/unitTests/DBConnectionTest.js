@@ -1,8 +1,10 @@
 const assert = require('assert');
 const getDBConnection = require('../../modules/DBManager');
 
+const URI = "mongodb+srv://admin:VXm8s3Up4BLK86HS@safeentrancebd.riy03.mongodb.net/SafeEntranceBD_test?retryWrites=true&w=majority";
+
 before(function(){
-    getDBConnection();
+    getDBConnection(URI);
 });
 
 describe('Database connection', function(){
