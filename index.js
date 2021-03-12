@@ -6,7 +6,7 @@ const app = express();
 getDBConnection();
 
 app.use(express.json({extended : false}));
-app.use('/api/places', require('./modules/api/routes/place'))
+app.use('/api/addPlace', require('./modules/api/routes/place'))
 
 const hostname = process.env.WEBSITE_HOSTNAME || 'localhost';
 const port = process.env.port || 8080;

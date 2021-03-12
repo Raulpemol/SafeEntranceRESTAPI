@@ -15,7 +15,7 @@ route.post('/', async (req, res) => {
             console.log(result);
     }).catch(err => console.log(err));
 
-    res.status(201).json(place);
+    res.status(201).json(place._id);
 });
 
 module.exports = route;
