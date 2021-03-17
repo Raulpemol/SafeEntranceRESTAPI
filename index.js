@@ -6,7 +6,7 @@ const URI = "mongodb+srv://admin:VXm8s3Up4BLK86HS@safeentrancebd.riy03.mongodb.n
 getDBConnection(URI);
 
 app.use(express.json({extended : false}));
-app.use('/api/addPlace', require('./modules/api/routes/place'))
+app.use('/api/places', require('./modules/api/routes/place'))
 
 const hostname = process.env.WEBSITE_HOSTNAME || 'localhost';
 const port = process.env.port || 8080;
