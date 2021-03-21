@@ -24,7 +24,12 @@ route.get('/getPlace/:id', async (req, res) => {
     try{
         const objectID = new mongoose.Types.ObjectId(req.params.id);
         Place.findById(objectID).then(result => {
-            res.status(201).json(result);
+            if(result == "null" || result == null){
+                res.status(404).json("Place not found");
+            }
+            else{
+                res.status(200).json(result);
+            }
         }).catch(err => {
             res.status(404).json("Place not found");
         });
