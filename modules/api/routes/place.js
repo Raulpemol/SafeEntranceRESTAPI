@@ -5,41 +5,28 @@ const mongoose = require('mongoose');
 const Place = require('../models/place');
 
 route.post('/addPlace', async (req, res) => {
-    Place.findOne({name: req.body.name}, function(err, placeByName){
+    Place.findOne({address: req.body.address}, function(err, placeByAddress){
         if(err){
             console.log(err);
             res.status(500).json("Error accessing the database");
         }
         else{
-            if(placeByName != null){
-                res.status(400).json(req.body.name + " ya fue registrado en el sistema previamente");
+            if(placeByAddress != null){
+                res.status(400).json("Ya se ha registrado un local en la dirección " + req.body.address);
             }
             else{
-                Place.findOne({address: req.body.address}, function(err, placeByAddress){
-                    if(err){
-                        console.log(err);
-                        res.status(500).json("Error accessing the database");
-                    }
-                    else{
-                        if(placeByAddress != null){
-                            res.status(400).json("Ya se ha registrado un local en la dirección " + req.body.address);
-                        }
-                        else{
-                            const place = new Place({
-                                _id: new mongoose.Types.ObjectId(),
-                                name: req.body.name,
-                                address : req.body.address,
-                                capacity : req.body.capacity
-                            });
-                            place.save().then(result => {
-                                    console.log(result);
-                                    res.status(201).json(place._id);
-                            }).catch(err => {
-                                console.log(err);
-                                res.status(500).json("Error saving the new place");
-                            });
-                        }
-                    }
+                const place = new Place({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: req.body.name,
+                    address : req.body.address,
+                    capacity : req.body.capacity
+                });
+                place.save().then(result => {
+                        console.log(result);
+                        res.status(201).json(place._id);
+                }).catch(err => {
+                    console.log(err);
+                    res.status(500).json("Error saving the new place");
                 });
             }
         }
