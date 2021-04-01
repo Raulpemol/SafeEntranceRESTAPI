@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
-const visitSchema = new mongoose.Schema({
-    placeID : String,
-    enterDateTime : Date,
-    exitDateTime : Date
-});
+const visitSchema = require('./visit');
 
 const alertSchema = new mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
