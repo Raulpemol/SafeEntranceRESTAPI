@@ -13,7 +13,7 @@ route.post('/', async (req, res) => {
             res.status(500).json("Error connecting to server");
         }
         else{
-            if(req.body.username == "user" && req.body.password == "pass"){
+            if(req.body.username == user && req.body.password == pass){
                 var token = jwt.sign(
                     {
                         user: req.body.username,
