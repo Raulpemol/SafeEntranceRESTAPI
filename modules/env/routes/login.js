@@ -1,7 +1,7 @@
 const express = require('express');
 const route = express.Router();
 
-route.post('/login', async (req, res) => {
+route.post('/', async (req, res) => {
     try{
         const user = process.env.SYSADMIN_USERNAME;
         const pass = process.env.SYSADMIN_PASSWORD;
