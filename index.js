@@ -1,17 +1,14 @@
 const express = require('express');
 const getDBConnection = require('./modules/DBManager');
-const session = require('express-session');
 
 const app = express();
+const jwt = require('jsonwebtoken');
+app.set('jwt',jwt);
+
 const URI = "mongodb+srv://admin:VXm8s3Up4BLK86HS@safeentrancebd.riy03.mongodb.net/SafeEntranceBD?retryWrites=true&w=majority";
 getDBConnection(URI);
 
 app.use(express.json({extended : false}));
-app.use(session({
-    secret: 'safeentrance uniovi',
-    resave: false,
-    saveUninitialized: true
-}));
 
 app.use('/api/places', require('./modules/api/routes/place'));
 app.use('/api/alerts', require('./modules/api/routes/alert'));

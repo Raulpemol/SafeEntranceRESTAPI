@@ -8,28 +8,35 @@ route.post('/login', async (req, res) => {
 
         if(user == undefined || user == null || user == "" ||
             pass == undefined || pass == null || pass == ""){
-            req.session.user = null;
             res.status(500).json("Error connecting to server");
         }
         else{
             if(req.body.username == user && req.body.password == pass){
-                req.session.user = req.body.username;
+                var token = app.get('jwt').sign(
+                    {
+                        user: req.body.username,
+                        time: Date.now()/1000
+                    },
+                    "encrypted"
+                );
+
                 res.status(200);
+                res.json({
+                    admin: true,
+                    token: token
+                });
             }
             else{
-                req.session.user = null;
                 res.status(403).json("Wrong credentials");
             }
         }
     }
     catch{
-        req.session.user = null;
         res.status(403).json("Forbidden");
     }
 });
 
 route.get('/logout', async (req, res) => {
-    req.session.user = null;
     res.status(200).send("Usuario desconectado");
 });
 
