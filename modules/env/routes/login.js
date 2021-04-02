@@ -12,7 +12,19 @@ route.post('/', async (req, res) => {
         }
         else{
             if(req.body.username == user && req.body.password == pass){
-                res.status(200).json("OK");
+                var token = app.get('jwt').sign(
+                    {
+                        user: req.body.username,
+                        time: Date.now()/1000
+                    },
+                    "encrypted"
+                );
+
+                res.status(200);
+                res.json({
+                    admin: true,
+                    token: token
+                });
             }
             else{
                 res.status(403).json("Wrong credentials");
