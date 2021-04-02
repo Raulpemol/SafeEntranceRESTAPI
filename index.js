@@ -9,6 +9,7 @@ app.use(express.json({extended : false}));
 app.use('/api/places', require('./modules/api/routes/place'));
 app.use('/api/alerts', require('./modules/api/routes/alert'));
 app.use('/env', require('./modules/env/routes/environment'));
+app.use('/admin', require('./modules/env/routes/login'));
 
 const hostname = process.env.WEBSITE_HOSTNAME || 'localhost';
 const port = process.env.port || 8080;
