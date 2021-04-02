@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 
 route.post('/', async (req, res) => {
     try{
-        const user = process.env.SYSADMIN_USERNAME;
-        const pass = process.env.SYSADMIN_PASSWORD;
+        const user = "administrador";
+        const pass = "#g9ads765gAhGY4sHIDSfsFSt6564#";
 
         if(user == undefined || user == null || user == "" ||
             pass == undefined || pass == null || pass == ""){

@@ -1,15 +1,21 @@
 const express = require('express');
 const route = express.Router();
+const mongoose = require('mongoose');
+
+const jwt = require('jsonwebtoken');
+const EnvVariable = require('../models/envVariable');
 
 route.get('/idbp', async (req, res) => {
     try{
-        const value = process.env.INFECT_DAYS_BEFORE_PCR;
-        if(value == undefined || value == null || value == ""){
-            res.status(500).json("Error connecting to server");
-        }
-        else{
-            res.status(200).json(value);
-        }
+        EnvVariable.findOne({name: "idbp"}, function(err, idbp){
+            if(err){
+                console.log(err);
+                res.status(500).json("Error accessing the database");
+            }
+            else{
+                res.status(200).json(idbp.value);
+            }
+        });
     }
     catch{
         res.status(400).json("Incorrect parameter format");
@@ -28,14 +34,34 @@ route.post('/setidbp', async (req, res) => {
                 });
             } 
             else {
-                const value = req.body.value;
-                if(value == undefined || value == null || value == ""){
-                    res.status(400).json("Incorrect value");
-                }
-                else{
-                    process.env.INFECT_DAYS_BEFORE_PCR = value;
-                    res.status(200).json("Value changed");
-                }
+                EnvVariable.findOne({name: "idbp"}, function(err, idbp){
+                    if(err){
+                        console.log(err);
+                        res.status(500).json("Error accessing the database");
+                    }
+                    else{
+                        const value = req.body.value;
+                        if(idbp == null){
+                            idbp = new EnvVariable({
+                                _id: new mongoose.Types.ObjectId(),
+                                name: "idbp",
+                                value: value
+                            });
+                            
+                        }
+                        else{
+                            idbp.value = value;
+                        }
+
+                        idbp.save().then(result => {
+                            console.log(result);
+                            res.status(201).json("Value changed");
+                        }).catch(err => {
+                            console.log(err);
+                            res.status(500).json("Error updating the value");
+                        });
+                    }
+                });
             }
         });
     }
