@@ -12,7 +12,7 @@ route.post('/', async (req, res) => {
         }
         else{
             if(req.body.username == user && req.body.password == pass){
-                res.status(200);
+                res.status(200).json("OK");
             }
             else{
                 res.status(403).json("Wrong credentials");
