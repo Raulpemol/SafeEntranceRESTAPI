@@ -33,4 +33,34 @@ route.post('/addAlert', async (req, res) => {
     });
 });
 
+route.post('/getAffectingAlerts', async (req, res) => {
+    try{
+        let result = new Array();
+        let fromDate = req.body.fromDate;
+        let places = req.body.places;
+        if(places.length > 0){
+            Alert.find({"alertDate": {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
+                if(err){
+                    console.log(err);
+                    res.status(500).json("Error accessing the database");
+                }
+                else{
+                    console.log(alerts[0]);
+                    for(let j = 0; j < alerts.length; j++){
+                        for(let k = 0; k < alerts[j].visits.length; k++){
+                            if(places.includes(alerts[j].visits[k].placeID)){
+                                result.push(alerts[j].visits[k]);
+                            }
+                        }
+                    }
+                    res.status(200).json(result);
+                }
+            });
+        }
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
+    }
+});
+
 module.exports = route;
