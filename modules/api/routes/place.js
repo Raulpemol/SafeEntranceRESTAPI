@@ -52,4 +52,23 @@ route.get('/getPlace/:id', async (req, res) => {
     }
 });
 
+route.get('/getPlaceName/:id', async (req, res) => {
+    try{
+        const objectID = new mongoose.Types.ObjectId(req.params.id);
+        Place.findById(objectID).then(result => {
+            if(result == "null" || result == null){
+                res.status(404).json("Place not found");
+            }
+            else{
+                res.status(200).json(result.name);
+            }
+        }).catch(err => {
+            res.status(404).json("Place not found");
+        });
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
+    }
+});
+
 module.exports = route;
