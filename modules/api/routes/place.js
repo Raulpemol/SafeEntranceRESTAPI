@@ -71,4 +71,22 @@ route.get('/getPlaceName/:id', async (req, res) => {
     }
 });
 
+route.get('/searchPlaceByName/:name', async (req, res) => {
+    try{
+        const name = req.params.name;
+        Place.find({name : name}, function(err, places){
+            if(err){
+                console.log(err);
+                res.status(500).json("Error accessing the database");
+            }
+            else{
+                res.status(200).json(places);
+            }
+        });
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
+    }
+});
+
 module.exports = route;
