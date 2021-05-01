@@ -13,14 +13,24 @@ route.post('/addAlert', async (req, res) => {
     let visitArray = [];
 
     for(let i = 0; i < req.body.visits.length; i++){
-        const visit = new Visit({
-            placeID: req.body.visits[i].placeID,
-            enterDateTime: req.body.visits[i].enterDateTime,
-            exitDateTime: req.body.visits[i].exitDateTime
-        });
-        visitArray[i] = visit;
+        if(req.body.visits[i].placeID != undefined && req.body.visits[i].enterDateTime != undefined && req.body.visits[i].exitDateTime != undefined){
+            const visit = new Visit({
+                placeID: req.body.visits[i].placeID,
+                enterDateTime: req.body.visits[i].enterDateTime,
+                exitDateTime: req.body.visits[i].exitDateTime
+            });
+            visitArray[i] = visit;
+        }
+        else{
+            res.status(400).json("Some visits have an invalid format");
+            return;
+        }
     }
 
+    if(req.body.symptomsDate == undefined || req.body.alertDate == undefined || req.body.state == undefined){
+        res.status(400).json("Invalid alert format");
+        return;
+    }
     const alert = new Alert({
         _id: new mongoose.Types.ObjectId(),
         symptomsDate: req.body.symptomsDate,
@@ -41,6 +51,10 @@ route.post('/addAlert', async (req, res) => {
 route.post('/getAffectingAlerts', async (req, res) => {
     try{
         let result = new Array();
+        if(req.body.places == undefined || req.body.fromDate == undefined || req.body.exclude == undefined){
+            res.status(400).json("Invalid request parameters");
+            return;
+        }
         let fromDate = req.body.fromDate;
         let places = req.body.places;
         let excludeIds = req.body.exclude;
@@ -62,6 +76,9 @@ route.post('/getAffectingAlerts', async (req, res) => {
                     res.status(200).json(result);
                 }
             });
+        }
+        else{
+            res.status(200).json(result);
         }
     }
     catch{
