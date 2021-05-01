@@ -43,8 +43,9 @@ route.post('/getAffectingAlerts', async (req, res) => {
         let result = new Array();
         let fromDate = req.body.fromDate;
         let places = req.body.places;
+        let excludeIds = req.body.exclude;
         if(places.length > 0){
-            Alert.find({state: VALID_ALERT_STATE, alertDate: {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
+            Alert.find({state: VALID_ALERT_STATE, _id: {"$nin": excludeIds}, alertDate: {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
                 if(err){
                     console.log(err);
                     res.status(500).json("Error accessing the database");
