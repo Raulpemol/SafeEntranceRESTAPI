@@ -7,6 +7,7 @@ const visitSchema = require('../models/visit');
 const Visit = mongoose.model('visit', visitSchema);
 
 const VALID_ALERT_STATE = "VALIDADA";
+const CREATED_ALERT_STATE = "CREADA";
 
 route.post('/addAlert', async (req, res) => {
     let visitArray = [];
@@ -43,7 +44,7 @@ route.post('/getAffectingAlerts', async (req, res) => {
         let fromDate = req.body.fromDate;
         let places = req.body.places;
         if(places.length > 0){
-            Alert.find({"state": VALID_ALERT_STATE, "alertDate": {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
+            Alert.find({state: VALID_ALERT_STATE, alertDate: {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
                 if(err){
                     console.log(err);
                     res.status(500).json("Error accessing the database");
