@@ -3,6 +3,7 @@ var httpStatus = require('http-status');
 const assert = require('assert');
 const Alert = require('../../modules/api/models/alert');
 const { expect } = require('chai');
+const { fail } = require('assert');
 
 describe('Deleting every alert in the database', function(){
     it('should empty the collection', async function(){
@@ -51,13 +52,28 @@ describe('The alerts API', function () {
             });
     });
 
-    it('POST Should create a new alert with some visits', function testSlash(done) {
+    it('POST Should create a validated alert with some visits', function testSlash(done) {
         request(server)
             .post('/api/alerts/addAlert')
             .send({
                 alertDate: "01/04/2021 14:25:00",
                 symptomsDate: "01/04/2021 14:26:59",
                 state: "VALIDADA",
+                visits: [
+                    {placeID: "6071b312f0338e9246", enterDateTime: "01/04/2021 14:00:00", exitDateTime: "01/04/2021 14:20:00"},
+                    {placeID: "6071b312fae6a100338e9246", enterDateTime: "01/04/2021 14:15:00", exitDateTime: "01/04/2021 14:16:00"},
+                    {placeID: "6071b312fae6a1006", enterDateTime: "01/04/2021 14:17:00", exitDateTime: "01/04/2021 14:20:00"}]
+            })
+            .expect(httpStatus.CREATED, done);
+    });
+
+    it('POST Should create a non validated alert with some visits', function testSlash(done) {
+        request(server)
+            .post('/api/alerts/addAlert')
+            .send({
+                alertDate: "01/04/2021 14:25:00",
+                symptomsDate: "01/04/2021 14:26:59",
+                state: "CREADA",
                 visits: [
                     {placeID: "6071b312f0338e9246", enterDateTime: "01/04/2021 14:00:00", exitDateTime: "01/04/2021 14:20:00"},
                     {placeID: "6071b312fae6a100338e9246", enterDateTime: "01/04/2021 14:15:00", exitDateTime: "01/04/2021 14:16:00"},
@@ -110,7 +126,7 @@ describe('The alerts API', function () {
             });
     });
 
-    it('POST Should obtain the first alert as a possible contact', function testSlash(done) {
+    it('POST Should obtain only the first alert as a possible contact', function testSlash(done) {
         request(server)
             .post('/api/alerts/getAffectingAlerts')
             .send({
@@ -119,8 +135,14 @@ describe('The alerts API', function () {
                 exclude: []
             })
             .then(res => {
-                expect(res.body).to.be.not.empty;
-                done();
+                expect(res.body[0].placeID).to.equal("6071b312fae6a100338e9246");
+                try{
+                    expect(res.body[1].placeID).to.equal("6071b312fae6a100338e9246");
+                    fail();
+                }
+                catch{
+                    done();
+                }
             });
     });
 });
