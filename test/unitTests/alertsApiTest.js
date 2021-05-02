@@ -3,16 +3,15 @@ var httpStatus = require('http-status');
 const assert = require('assert');
 const Alert = require('../../modules/api/models/alert');
 const { expect } = require('chai');
-const { fail } = require('assert');
 
 describe('Deleting every alert in the database', function(){
-    it('should empty the collection', async function(){
-        await Alert.deleteMany({}, async function(err){
+    it('should empty the collection', function testSlash(done){
+        Alert.deleteMany({}, function(err){
             if(err){
                 assert.fail();
             }
             else{
-                await Alert.find({}, function(err2, alerts){
+                Alert.find({}, function(err2, alerts){
                     if(err2){
                         assert.fail();
                     }
@@ -21,14 +20,13 @@ describe('Deleting every alert in the database', function(){
                     }
                 });
             }
-        })
+        });
+        done();
     });
 });
 
 describe('The alerts API', function () {
     var server;
-    let alert1 = "";
-    let alert2;
 
     beforeEach(function () {
         server = require('../../index');
@@ -120,10 +118,7 @@ describe('The alerts API', function () {
                 state: "CREADA",
                 visits: []
             })
-            .expect(httpStatus.CREATED, done)
-            .then(res => {
-                alert2 = res.body;
-            });
+            .expect(httpStatus.CREATED, done);
     });
 
     it('POST Should obtain only the first alert as a possible contact', function testSlash(done) {
@@ -138,7 +133,7 @@ describe('The alerts API', function () {
                 expect(res.body[0].placeID).to.equal("6071b312fae6a100338e9246");
                 try{
                     expect(res.body[1].placeID).to.equal("6071b312fae6a100338e9246");
-                    fail();
+                    assert.fail();
                 }
                 catch{
                     done();

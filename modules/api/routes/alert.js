@@ -39,8 +39,7 @@ route.post('/addAlert', async (req, res) => {
         state: req.body.state,
         visits : visitArray
     });
-    alert.save().then(result => {
-            console.log(result);
+    alert.save().then(() => {
             res.status(201).json(alert._id);
     }).catch(err => {
         console.log(err);
@@ -65,7 +64,6 @@ route.post('/getAffectingAlerts', async (req, res) => {
                     res.status(500).json("Error accessing the database");
                 }
                 else{
-                    console.log(alerts[0]);
                     for(let j = 0; j < alerts.length; j++){
                         for(let k = 0; k < alerts[j].visits.length; k++){
                             if(places.includes(alerts[j].visits[k].placeID)){
