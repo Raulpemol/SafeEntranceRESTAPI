@@ -40,7 +40,11 @@ route.post('/setidbp', async (req, res) => {
                         res.status(500).json("Error accessing the database");
                     }
                     else{
-                        const value = req.body.value;
+                        const value = Number.parseInt(req.body.value);
+                        if(isNaN(value)){
+                            res.status(400).json("Invalid request parameters");
+                            return;
+                        }
                         if(idbp == null){
                             idbp = new EnvVariable({
                                 _id: new mongoose.Types.ObjectId(),
@@ -54,7 +58,6 @@ route.post('/setidbp', async (req, res) => {
                         }
 
                         idbp.save().then(result => {
-                            console.log(result);
                             res.status(201).json("Value changed");
                         }).catch(err => {
                             console.log(err);
@@ -105,7 +108,11 @@ route.post('/setdapi', async (req, res) => {
                         res.status(500).json("Error accessing the database");
                     }
                     else{
-                        const value = req.body.value;
+                        const value = Number.parseInt(req.body.value);
+                        if(isNaN(value)){
+                            res.status(400).json("Invalid request parameters");
+                            return;
+                        }
                         if(dapi == null){
                             dapi = new EnvVariable({
                                 _id: new mongoose.Types.ObjectId(),
@@ -119,7 +126,6 @@ route.post('/setdapi', async (req, res) => {
                         }
 
                         dapi.save().then(result => {
-                            console.log(result);
                             res.status(201).json("Value changed");
                         }).catch(err => {
                             console.log(err);
@@ -170,7 +176,11 @@ route.post('/setmfdc', async (req, res) => {
                         res.status(500).json("Error accessing the database");
                     }
                     else{
-                        const value = req.body.value;
+                        const value = Number.parseInt(req.body.value);
+                        if(isNaN(value)){
+                            res.status(400).json("Invalid request parameters");
+                            return;
+                        }
                         if(mfdc == null){
                             mfdc = new EnvVariable({
                                 _id: new mongoose.Types.ObjectId(),
@@ -184,7 +194,6 @@ route.post('/setmfdc', async (req, res) => {
                         }
 
                         mfdc.save().then(result => {
-                            console.log(result);
                             res.status(201).json("Value changed");
                         }).catch(err => {
                             console.log(err);
