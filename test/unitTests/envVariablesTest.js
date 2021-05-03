@@ -8,8 +8,8 @@ describe('The environment variables API', function(){
     var server;
     var token;
 
-    const user = "administrador";
-    const pass = "#g9ads765gAhGY4sHIDSfsFSt6564#";
+    const user = "test_user";
+    const pass = "test_password";
 
     before(function () {
         server = require('../../index');
