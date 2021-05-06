@@ -18,7 +18,7 @@ route.post('/', async (req, res) => {
 
         if(user == undefined || user == null || user == "" ||
             pass == undefined || pass == null || pass == ""){
-            res.status(500).json("Error connecting to my server");
+            res.status(500).json("Error connecting to server");
         }
         else{
             if(req.body.username == user && req.body.password == pass){
