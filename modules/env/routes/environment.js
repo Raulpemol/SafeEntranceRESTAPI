@@ -5,6 +5,46 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const EnvVariable = require('../models/envVariable');
 
+route.get('/getVariables', async (req, res) => {
+    try{
+        EnvVariable.find(function(err, variables){
+            if(err){
+                console.log(err);
+                res.status(500).json("Error accessing the database");
+            }
+            else{
+                res.status(200).json(variables);
+            }
+        });
+    }    
+    catch{
+        res.status(500).json("Error proccessing your request");
+    }
+});
+
+route.get('/getVariable/:name', async (req, res) => {
+    try{
+        const name = req.params.name;
+        EnvVariable.findOne({name: name}, function(err, variable){
+            if(err){
+                console.log(err);
+                res.status(500).json("Error accessing the database");
+            }
+            else{
+                if(variable == null || variable == undefined){
+                    res.status(404).json("The provided variable does not exist");
+                }
+                else{
+                    res.status(200).json(variable.value);
+                }
+            }
+        });
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
+    }
+});
+
 route.get('/idbp', async (req, res) => {
     try{
         EnvVariable.findOne({name: "idbp"}, function(err, idbp){
