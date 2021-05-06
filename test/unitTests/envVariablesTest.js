@@ -32,89 +32,33 @@ describe('The environment variables API', function(){
             });
     });
 
-    it('POST Should allow to set a value for the infectious days before a pcr', function testSlash(done){
+    it('POST Should allow to set a value for a new environment variable', function testSlash(done){
         request(server)
-            .post('/env/setidbp')
+            .post('/env/setVariable')
             .send({
                 token: token,
+                name: "idbp",
                 value: 2
             })
             .expect(httpStatus.CREATED, done);
     });
 
-    it('POST Should not allow to set a non-numeric value for the infectious days before a pcr', function testSlash(done){
+    it('POST Should not allow to set a non-numeric value for the variable', function testSlash(done){
         request(server)
-            .post('/env/setidbp')
+            .post('/env/setVariable')
             .send({
                 token: token,
+                name: "idbp",
                 value: "a"
             })
             .expect(httpStatus.BAD_REQUEST, done);
     });
 
-    it('GET Should return the infectious days before a pcr', function testSlash(done){
+    it('GET Should return the previously created variable', function testSlash(done){
         request(server)
-            .get('/env/idbp')
+            .get('/env/getVariable/idbp')
             .then(res => {
                 expect(res.body).to.equal("2");
-                done();
-            });
-    });
-
-    it('POST Should allow to set a value for the days after infective period', function testSlash(done){
-        request(server)
-            .post('/env/setdapi')
-            .send({
-                token: token,
-                value: 7
-            })
-            .expect(httpStatus.CREATED, done);
-    });
-
-    it('POST Should not allow to set a non-numeric value for the days after infective period', function testSlash(done){
-        request(server)
-            .post('/env/setdapi')
-            .send({
-                token: token,
-                value: "a"
-            })
-            .expect(httpStatus.BAD_REQUEST, done);
-    });
-
-    it('GET Should return the days after infective period', function testSlash(done){
-        request(server)
-            .get('/env/dapi')
-            .then(res => {
-                expect(res.body).to.equal("7");
-                done();
-            });
-    });
-
-    it('POST Should allow to set a value for the minutes to be a direct contact', function testSlash(done){
-        request(server)
-            .post('/env/setmfdc')
-            .send({
-                token: token,
-                value: 15
-            })
-            .expect(httpStatus.CREATED, done);
-    });
-
-    it('POST Should not allow to set a non-numeric value for the minutes to be a direct contact', function testSlash(done){
-        request(server)
-            .post('/env/setmfdc')
-            .send({
-                token: token,
-                value: "a"
-            })
-            .expect(httpStatus.BAD_REQUEST, done);
-    });
-
-    it('GET Should return the minutes to be a direct contact', function testSlash(done){
-        request(server)
-            .get('/env/mfdc')
-            .then(res => {
-                expect(res.body).to.equal("15");
                 done();
             });
     });
