@@ -130,4 +130,38 @@ route.post('/validate', async (req, res) => {
     }
 });
 
+route.post('/deleteNotValid', async (req, res) => {
+    try{
+        const id = req.body._id;
+        if(id == undefined || id == null){
+            res.status(400).json("Incorrect parameter format");
+        }
+        else{
+            Alert.findOne({_id: id}, function (err, alert){
+                if(err){
+                    res.status(500).json("Error accessing the database");
+                }
+                else{
+                    if(alert.state == CREATED_ALERT_STATE){
+                        Alert.deleteOne({_id: id}, function (err){
+                            if(err){
+                                res.status(500).json("Error accessing theee database");
+                            }
+                            else{
+                                res.status(200).json("Alert deleted");
+                            }
+                        });
+                    }
+                    else{
+                        res.status(400).json("The alert is valid");
+                    }
+                }
+            });
+        }
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
+    }
+});
+
 module.exports = route;
