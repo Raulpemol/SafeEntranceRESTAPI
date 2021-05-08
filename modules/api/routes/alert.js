@@ -33,6 +33,7 @@ route.post('/addAlert', async (req, res) => {
     }
     const alert = new Alert({
         _id: new mongoose.Types.ObjectId(),
+        code: req.body.code,
         symptomsDate: req.body.symptomsDate,
         alertDate : req.body.alertDate,
         validationDate: null,
