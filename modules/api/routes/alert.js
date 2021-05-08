@@ -42,7 +42,6 @@ route.post('/addAlert', async (req, res) => {
     alert.save().then(() => {
             res.status(201).json(alert._id);
     }).catch(err => {
-        console.log(err);
         res.status(500).json("Error registering the alert");
     });
 });
@@ -60,7 +59,6 @@ route.post('/getAffectingAlerts', async (req, res) => {
         if(places.length > 0){
             Alert.find({state: VALID_ALERT_STATE, _id: {"$nin": excludeIds}, alertDate: {"$gte": fromDate}, "visits.placeID": { "$in": places }}, function(err, alerts){
                 if(err){
-                    console.log(err);
                     res.status(500).json("Error accessing the database");
                 }
                 else{
@@ -88,8 +86,7 @@ route.get('/getNotValidated', async (req, res) => {
     try{
         Alert.find({state: CREATED_ALERT_STATE}, function (err, alerts){
             if(err){
-                console.log(err);
-                res.status(500).json("Error accessing the database")
+                res.status(500).json("Error accessing the database");
             }
             else{
                 res.status(200).json(alerts);
@@ -98,6 +95,38 @@ route.get('/getNotValidated', async (req, res) => {
     }
     catch{
         res.status(500).json("Error connecting to server");
+    }
+});
+
+route.post('/validate', async (req, res) => {
+    try{
+        const id = req.body._id;
+        if(id == undefined || id == null){
+            res.status(400).json("Incorrect parameter format");
+        }
+        else{
+            Alert.findOne({_id: id}, function (err, alert){
+                if(err){
+                    res.status(500).json("Error accessing the database");
+                }
+                else{
+                    if(alert == null || alert == undefined){
+                        res.status(404).json("Wrong alert identifier");
+                    }
+                    else{
+                        alert.state = VALID_ALERT_STATE;
+                        alert.save().then(() => {
+                            res.status(200).json(alert._id);
+                        }).catch(err => {
+                            res.status(500).json("Error registering the alert");
+                        });
+                    }
+                }
+            });
+        }
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
     }
 });
 
