@@ -84,4 +84,21 @@ route.post('/getAffectingAlerts', async (req, res) => {
     }
 });
 
+route.get('/getNotValidated', async (req, res) => {
+    try{
+        Alert.find({state: CREATED_ALERT_STATE}, function (err, alerts){
+            if(err){
+                console.log(err);
+                res.status(500).json("Error accessing the database")
+            }
+            else{
+                res.status(200).json(alerts);
+            }
+        });
+    }
+    catch{
+        res.status(500).json("Error connecting to server");
+    }
+});
+
 module.exports = route;
