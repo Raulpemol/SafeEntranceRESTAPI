@@ -116,6 +116,7 @@ route.post('/validate', async (req, res) => {
                     }
                     else{
                         alert.state = VALID_ALERT_STATE;
+                        alert.validationDate = Date.now();
                         alert.save().then(() => {
                             res.status(200).json(alert._id);
                         }).catch(err => {
