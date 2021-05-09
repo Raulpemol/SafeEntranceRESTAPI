@@ -74,7 +74,7 @@ describe('The alerts API', function () {
                 state: "CREADA",
                 visits: [
                     {placeID: "6071b312f0338e9246", enterDateTime: "01/04/2021 14:00:00", exitDateTime: "01/04/2021 14:20:00"},
-                    {placeID: "6071b312fae6a100338e9246", enterDateTime: "01/04/2021 14:15:00", exitDateTime: "01/04/2021 14:16:00"},
+                    {placeID: "6071b312fae6a100338e9247", enterDateTime: "01/04/2021 14:15:00", exitDateTime: "01/04/2021 14:16:00"},
                     {placeID: "6071b312fae6a1006", enterDateTime: "01/04/2021 14:17:00", exitDateTime: "01/04/2021 14:20:00"}]
             })
             .expect(httpStatus.CREATED, done);
@@ -132,12 +132,22 @@ describe('The alerts API', function () {
             .then(res => {
                 expect(res.body[0].placeID).to.equal("6071b312fae6a100338e9246");
                 try{
-                    expect(res.body[1].placeID).to.equal("6071b312fae6a100338e9246");
+                    expect(res.body[1].placeID).to.equal("6071b312fae6a100338e9247");
                     assert.fail();
                 }
                 catch{
                     done();
                 }
+            });
+    });
+
+    it('GET Should obtain the second and third alerts as not validated ones', function testSlash(done) {
+        request(server)
+            .get('/api/alerts/getNotValidated')
+            .then(res => {
+                expect(res.body[0].visits[1].placeID).to.equal("6071b312fae6a100338e9247");
+                expect(res.body[1].visits).to.be.empty;
+                done();
             });
     });
 });
