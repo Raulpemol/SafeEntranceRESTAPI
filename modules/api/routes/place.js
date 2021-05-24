@@ -29,12 +29,12 @@ route.post('/addPlace', async (req, res) => {
                         _id: new mongoose.Types.ObjectId(),
                         name: req.body.name,
                         address : req.body.address,
-                        capacity : capacity
+                        capacity : capacity,
+                        occupation: 0
                     });
                     place.save().then(() => {
                             res.status(201).json(place._id);
                     }).catch(err => {
-                        console.log(err);
                         res.status(500).json("Error saving the new place");
                     });
                 }
@@ -62,6 +62,47 @@ route.get('/getPlace/:id', async (req, res) => {
     }
     catch{
         res.status(404).json("Incorrect parameter format");
+    }
+});
+
+route.post('/scanPlace', async (req, res) => {
+    try{
+        const objectID = new mongoose.Types.ObjectId(req.body.id);
+        const isEntry = req.body.isEntry;
+
+        Place.findById(objectID).then(result => {
+            if(result == "null" || result == null){
+                res.status(404).json("Place not found");
+            }
+            else{
+                if(isEntry){
+                    if(result.occupation < result.capacity){
+                        result.occupation++;
+                        result.save().then(() => {
+                            res.status(200).json(result);
+                        }).catch(err => {
+                            res.status(500).json("Error updating the place status");
+                        });
+                    }
+                    else{
+                        res.status(200).json({error: "Place full"});
+                    }
+                }
+                else{
+                    result.occupation--;
+                    result.save().then(() => {
+                        res.status(200).json(result);
+                    }).catch(err => {
+                        res.status(500).json("Error updating the place status");
+                    });
+                }
+            }
+        }).catch(err => {
+            res.status(404).json("Place not found");
+        });
+    }
+    catch{
+        res.status(400).json("Incorrect parameter format");
     }
 });
 
