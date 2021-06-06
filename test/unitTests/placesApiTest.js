@@ -5,8 +5,18 @@ const Alert = require('../../modules/api/models/alert');
 const { expect } = require('chai');
 const Place = require('../../modules/api/models/place');
 
-describe('Initialize collection places', function(){
-    it('should empty the collection', async function testSlash(done){
+describe('Places API tests', function(){
+    var server;
+
+    beforeEach(function () {
+        server = require('../../index');
+    });
+
+    afterEach(function () {
+        server.close();
+    });
+
+    it('BEFORE Initialize DB collection', async function testSlash(done){
         Place.deleteMany({}, function(err){
             if(err){
                 assert.fail();
@@ -24,18 +34,6 @@ describe('Initialize collection places', function(){
         });
         
         done();
-    });
-});
-
-describe('The places API', function(){
-    var server;
-
-    beforeEach(function () {
-        server = require('../../index');
-    });
-
-    afterEach(function () {
-        server.close();
     });
 
     it('POST Should add a place to the collection', function testSlash(done){

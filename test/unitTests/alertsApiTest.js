@@ -4,8 +4,18 @@ const assert = require('assert');
 const Alert = require('../../modules/api/models/alert');
 const { expect } = require('chai');
 
-describe('Deleting every alert in the database', function(){
-    it('should empty the collection', function testSlash(done){
+describe('Alerts API tests', function () {
+    var server;
+
+    beforeEach(function () {
+        server = require('../../index');
+    });
+
+    afterEach(function () {
+        server.close();
+    });
+
+    it('BEFORE Initialize Alerts DB collection', function testSlash(done){
         Alert.deleteMany({}, function(err){
             if(err){
                 assert.fail();
@@ -22,18 +32,6 @@ describe('Deleting every alert in the database', function(){
             }
         });
         done();
-    });
-});
-
-describe('The alerts API', function () {
-    var server;
-
-    beforeEach(function () {
-        server = require('../../index');
-    });
-
-    afterEach(function () {
-        server.close();
     });
 
     it('POST Should not obtain any possible contact', function testSlash(done) {

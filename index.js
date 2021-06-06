@@ -28,6 +28,6 @@ app.get('/', (req, res) => {
     res.send('Bienvenido a la API REST de SafeEntrance')
 });
 
-var server = app.listen(port, () => console.log(`Server running at http://${hostname}:${port}`));
+var server = app.listen(port);
 
 module.exports = server;
